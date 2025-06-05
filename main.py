@@ -6,10 +6,13 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.framework.formats import landmark_pb2 # Ensure this is imported
 
+# Global threshold
+threshold = 0.2
+
 # Capture video
 cap = cv.VideoCapture(1)
-# model_path is an absolute path as defined by you
-model_path = '/Users/frankieschlehofer/situpstraight/pose_landmarker_full.task'
+
+model_path = 'pose_landmarker_full.task'
 
 BaseOptions = mp.tasks.BaseOptions
 PoseLandmarker = mp.tasks.vision.PoseLandmarker
@@ -61,9 +64,9 @@ def detect_slouching(detection_result: PoseLandmarkerResult):
     y_shoulder_midpoint = (landmarks[11].y + landmarks[12].y) / 2
 
     # If the difference is < min_distance, likely slouching. Min distance may need to vary person by person
-    min_distance = 0.2
+    
     distance = abs(y_mouth_midpoint - y_shoulder_midpoint)
-    if distance < min_distance:
+    if distance < threshold:
         return True, distance
     return False, distance
 

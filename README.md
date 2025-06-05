@@ -44,6 +44,7 @@ This project leverages computer vision to provide real-time feedback on user pos
     ```
 4.  A window should appear showing your webcam feed with pose landmarks (if detected).
 5.  Press 'q' to close the application window and stop the script.
+6.  Update the threshold as needed based on your testing
 
 ## To-Do / Future Enhancements
 
