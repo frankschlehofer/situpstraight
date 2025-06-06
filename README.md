@@ -7,7 +7,7 @@ This project leverages computer vision to provide real-time feedback on user pos
 ## Features (Current & Planned)
 
 * **Real-time Pose Estimation:** Displays your pose skeleton on the webcam feed.
-* **Slouch Detection Logic:** To be implemented
+* **Slouch Detection Logic:** Determines the distance between your mouth and shoulders, if this is below a threshold you are likely slouching
 * **User Feedback:** (Visual overlay is current; alerts are planned)
 
 ## Tech Stack
@@ -45,6 +45,9 @@ This project leverages computer vision to provide real-time feedback on user pos
 4.  A window should appear showing your webcam feed with pose landmarks (if detected).
 5.  Press 'q' to close the application window and stop the script.
 6.  Update the threshold as needed based on your testing
+
+7. Notes: Threshold may need to be adjusted on a user by user basis
+8. Dependencies work on mac, not sure how the plyer will handle other devices
 
 ## To-Do / Future Enhancements
 

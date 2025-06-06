@@ -4,10 +4,14 @@ import numpy as np
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mediapipe.framework.formats import landmark_pb2 # Ensure this is imported
+from mediapipe.framework.formats import landmark_pb2
+from plyer import notification
 
 # Global threshold
 threshold = 0.2
+last_notification_time = 0
+notification_cooldown_seconds = 5 # Only notify once every 5 seconds
+
 
 # Capture video
 cap = cv.VideoCapture(1)
@@ -125,14 +129,28 @@ with PoseLandmarker.create_from_options(options) as landmarker:
                         font_scale, 
                         text_color_bgr, 
                         text_thickness, 
-                        cv.LINE_AA) # Using anti-aliasing
-            # Test for slouching
+                        cv.LINE_AA)
+            # Test for slouching, ret set to true if slouching
             ret, distance = detect_slouching(current_latest_result)
             if ret:
+                # Display on OpenCV screen
                 slouch_text = f"POSTURE ALERT! Distance: {distance:.2f}"
                 slouch_text_position = (10, 70)
                 slouch_text_color = (0, 0, 255) # Red
                 cv.putText(display_image_bgr, slouch_text, slouch_text_position, font, 1.0, slouch_text_color, 2, cv.LINE_AA)
+
+                # Send notification if one hasnt been sent in past 30 seconds
+                current_time = time.time()
+                if (current_time - last_notification_time) > notification_cooldown_seconds:
+                    print("SENDING NOTIFICATION!")
+                    notification.notify(
+                        title='Posture Check!',
+                        message='You seem to be slouching. Take a moment to sit up straight.',
+                        app_name='Sit Up Straight',
+                        timeout=10 # Notification will disappear after 10 seconds on some systems
+                    )
+                    last_notification_time = current_time # Reset the timer
+               
         
         cv.imshow('window', display_image_bgr)
 
